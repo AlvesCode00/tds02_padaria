@@ -21,6 +21,11 @@ namespace backPadaria.Model
         // ele vai ser considerado cliente do msm jeito).
         public Cliente(string nome, string cpf, string telefone, string endereco, int pontos)
         {
+            if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(cpf) || string.IsNullOrEmpty(telefone) || string.IsNullOrEmpty(endereco))
+            {
+                throw new ArgumentException("Todos os campos devem ser preenchidos.");
+            }
+
             this.nome = nome;
             this.cpf = cpf;
             this.telefone = telefone;
