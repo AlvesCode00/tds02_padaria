@@ -1,6 +1,7 @@
 ﻿using MySqlConnector;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,7 +43,7 @@ namespace backPadaria
             }
         }
 
-
+        
        
         //Declaração do método: público e estático, retornando um número inteiro (Linhas afetadas)
         // e recebe um objeto MySqlCommand com a instrução SQL já configurada com parâmetro.
@@ -140,11 +141,16 @@ namespace backPadaria
                 // Abre a porta de comunicação com o banco MuSQL.
                 conexao.Open();
 
+
+                command.Connection = conexao;
                 // Executa a consulta e retorna o "leitor" de dados.
                 // O CommandBehavior. CloseConnection e a peca-chave deste metodo: ele avisa ao leitor
                 // que assin que ele (o leitor) for fechado ou descartado la na tela/classe que o chamou,
                 // a conexão com o banco deve ser fechada automaticamente junto con ele.
-                return command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+
+                //return command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                return command.ExecuteReader(CommandBehavior.CloseConnection);
+
             }
             catch (MySqlException ex) {
 
