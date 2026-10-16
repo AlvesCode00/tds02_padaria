@@ -7,6 +7,8 @@ namespace backPadaria
         static void Main(string[] args)
         {
 
+            Console.WriteLine("------------ BEM VINDO ------------\n       Ao Cadastro do Clietes \n");
+
             Console.WriteLine("Digite o nome do Cliente: ");
             string nomeCliente = Console.ReadLine();
 
@@ -19,14 +21,17 @@ namespace backPadaria
             Console.WriteLine("Digite o endereço do cliente: ");
             string enderecoCliente = Console.ReadLine();
 
+            Console.WriteLine("Digite a quantidade de pontos: ");
+            int pontosCliente = int.Parse(Console.ReadLine());
+
 
             // REFATORAÇÂO /// 
             Cliente cliente1 = new Cliente(
-               nome: "Raphael Oliveira",
-               cpf: "123.456.789-00",
-               telefone: "(11) 98765-4321",
-               endereco:  "Rua do SENAC, 123, São Paulo, SP",
-               pontos:  10
+               nome: nomeCliente,
+               cpf: cpfCliente,
+               telefone: telefoneCliente,
+               endereco: enderecoCliente,
+               pontos: pontosCliente
                 );
 
             Cliente.inserir(cliente1);
