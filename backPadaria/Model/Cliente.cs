@@ -40,6 +40,7 @@ namespace backPadaria.Model
         {
             this.Id = id;
         }
+       
         // Método Construtor
         public Cliente(int id, string nome, string cpf, string telefone, string endereco, int pontos)
         {
@@ -148,6 +149,66 @@ namespace backPadaria.Model
                 return listaClientes;
             }
         }
+
+        public static Cliente? listarPorId(int id)
+        {
+            string sql = "SELECT * FROM `Cliente` WHERE `id` = @id";
+
+
+            using(var cmd = new MySqlCommand(sql))
+            {
+                cmd.Parameters.AddWithValue("@id", id);
+
+                MySqlDataReader reader = Banco.executarComRetornoDeDados(cmd);
+
+                Cliente? cliente = null;
+
+                while (reader.Read())
+                {
+                    /// Extrai os dados da linha atual.
+                    int idBanco = reader.GetInt32("Id");
+                    string nome = validarCampo(reader["Nome"]);
+                    string cpf = validarCampo(reader["CPF"]);
+                    string telefone = validarCampo(reader["Telefone"]);
+                    string endereco = validarCampo(reader["Endereco"]);
+                    int pontos = reader.GetInt32("Pontos");
+
+                    /// Cria o objeto Cliente com os dados extraídos.
+                   cliente = new Cliente(id, nome, cpf, telefone, endereco, pontos);
+                }
+
+                return cliente;
+            }
+        }
+
+        public static int atualizar(Cliente cliente)
+        {
+            string sql = "UPDATE `Cliente` SET `Nome` = @Nome, `Cpf` = @CPF, `Telefone` = @Telefone, `Endereco` = @Endereco, `Pontos` = @Pontos WHERE `Id` = @Id";
+
+            using (var cmd = new MySqlCommand(sql))
+            {
+
+                // Vinculação de parâmetros: Protege contra SQL Injection e organiza os dados
+                cmd.Parameters.AddWithValue("@Nome", cliente.Nome);
+                cmd.Parameters.AddWithValue("@CPF", cliente.Cpf);
+                cmd.Parameters.AddWithValue("@Telefone", cliente.Telefone);
+                cmd.Parameters.AddWithValue("@Endereco", cliente.Endereco);
+                cmd.Parameters.AddWithValue("@Pontos", cliente.Pontos);
+
+                // A chave de busca: Quem será atualizado é o cliente cujo Id seja igual ao Id do objeto cliente passado como parâmetro.
+                cmd.Parameters.AddWithValue("@Id", cliente.Id);
+
+                // Execução: O UPDATE também é uma instrução de ação (como INSERT e DELETE).
+                // Ele vai retornar 1 (se encontrou o ID e atualizou com sucesso) ou 0 (se o ID nao existia).
+                return Banco.executarComando(cmd);
+              
+            }
+
+        }
+
+
+
+
         private static string validarCampo(object campo)
         {
             if(campo == DBNull.Value || campo == null)
@@ -159,6 +220,11 @@ namespace backPadaria.Model
                 return campo.ToString();
             }
        
+        }
+
+        internal static int atualizar(Funcionario fun1)
+        {
+            throw new NotImplementedException();
         }
     }
   

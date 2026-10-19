@@ -157,7 +157,7 @@ namespace backPadaria
                 // 0 Dispose() ja executa o Close() e libera a memoria.
                 conexao.Dispose();
 
-                Console.WriteLine($"Errona leitura de Banco de Dados: {ex.Message}");
+                Console.WriteLine($"Erro na leitura de Banco de Dados: {ex.Message}");
 
                 //Ao inves de retornar null, relanca o erro(throw) para que o metodo que
                 // chamou este ExecuteReader saiba que a pesquisa falhou e possa tratar a tela do usuário,
