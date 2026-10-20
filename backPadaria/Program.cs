@@ -1,4 +1,5 @@
 ﻿using backPadaria.Model;
+using backPadaria.Services;
 
 namespace backPadaria
 {
@@ -88,30 +89,14 @@ namespace backPadaria
             //}
 
 
-            //Cliente? meuCliente  = Cliente.listarPorId(5);
-            //if(meuCliente != null)
-            //{
-            //    meuCliente.Endereco = "Rua das Botas, 0";
-            //    meuCliente.Telefone = "110009-9873";
 
-            //    int resultado = Cliente.atualizar(meuCliente);
-            //    if (resultado == 0) {
-
-            //        Console.WriteLine("Cliente atualizado com sucesso!");
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine("Não foi possivel atualizar");
-            //    }
-            //}
             //Cliente.atualizar(new Cliente(5, "Rafael", "12345678900", "11999999999", "Rua dos Bobos, 0", 100));
 
 
 
 
 
-
-
+            //CADASTRO DE FUNCIONARIO
 
 
             //Console.WriteLine("------------ BEM VINDO ------------\n       Ao Cadastro do Funcionario\n");
@@ -136,62 +121,107 @@ namespace backPadaria
 
             //Console.WriteLine("------------------------\n Deletar Funcionario\n ------------------------ ");
 
-            //Console.WriteLine("Resultado:");
-            //Funcionario deletar = new Funcionario(3);
-            //if (Funcionario.deletar(deletar) >= 1)
-            //{
-            //    Console.WriteLine("Funcionario excluido com sucesso.");
-            //}
-            //else
-            //{
-            //    Console.WriteLine($"Deu bom não. Não Existe esse Funcionario Cadastrado! ");
-            //}
 
-            //List<Funcionario> funcionarios = Funcionario.ListarTodos();
-
-            //foreach (Funcionario funcionario in funcionarios)
-            //{
-            //    Console.WriteLine("-------------------------------");
-            //    Console.WriteLine($"Id: {funcionario.Id}");
-            //    Console.WriteLine($"Nome: {funcionario.Nome}");
-            //    Console.WriteLine($"CPF: {funcionario.Cpf}");
-            //    Console.WriteLine($"Cargo: {funcionario.Cargo}");
-            //    Console.WriteLine("-------------------------------");
+            /// TESTE DE DELETAR FUNCIONARIO ///
 
 
-            //}
+        //    Console.WriteLine("Resultado:");
+        //    Funcionario deletar = new Funcionario(3);
+        //    if (Funcionario.deletar(deletar) >= 1)
+        //    {
+        //        Console.WriteLine("Funcionario excluido com sucesso.");
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine($"Deu bom não. Não Existe esse Funcionario Cadastrado! ");
+        //    }
+
+        //    List<Funcionario> funcionarios = Funcionario.ListarTodos();
+
+        //    foreach (Funcionario funcionario in funcionarios)
+        //    {
+        //        Console.WriteLine("-------------------------------");
+        //        Console.WriteLine($"Id: {funcionario.Id}");
+        //        Console.WriteLine($"Nome: {funcionario.Nome}");
+        //        Console.WriteLine($"CPF: {funcionario.Cpf}");
+        //        Console.WriteLine($"Cargo: {funcionario.Cargo}");
+        //        Console.WriteLine("-------------------------------");
 
 
-            //}
+        //    }
 
 
-            //Funcionario.deletar(new Funcionario(4));
-
-            Funcionario? fun1 = Funcionario.listarPorId(5);
-            if (fun1 != null)
-            {
-                fun1.Cpf = "11199977719";
-                fun1.Cargo = "Braço Direito do Bagulho";
-
-                int resultado = Cliente.atualizar(fun1);
-                if (resultado == 0)
-                {
-
-                    Console.WriteLine("Funcionario atualizado com sucesso!");
-                }
-                else
-                {
-                    Console.WriteLine("Não foi possivel atualizar");
-                }
-
-                Funcionario.listarPorId(1);
+        //}
 
 
+        /// TESTE DE LISTAGEM DE FUNCIONARIOS ///
 
-            }
+
+        //List<Funcionario> funcionarios = Funcionario.ListarTodos();
+
+        //foreach (Funcionario funcionario in funcionarios)
+        //{
+        //    Console.WriteLine("-------------------------------");
+        //    Console.WriteLine($"Id: {funcionario.Id}");
+        //    Console.WriteLine($"Nome: {funcionario.Nome}");
+        //    Console.WriteLine($"CPF: {funcionario.Cpf}");
+        //    Console.WriteLine($"Cargo: {funcionario.Cargo}");
+
+        //    Console.WriteLine("-------------------------------");
+
+
+        //}
+
+
+        //MÉTODO PARA TESTAR A LISTAGEM DE FUNCIONARIOS POR ID
+
+
+        //Funcionario? fun01 = Funcionario.listarPorId(2);
+        //    if (fun01 != null)
+        //    {
+        //        Console.WriteLine("-------------------------------");
+
+        //        Console.WriteLine($"Id: {fun01.Id}");
+        //        Console.WriteLine($"Nome: {fun01.Nome}");
+        //        Console.WriteLine($"CPF: {fun01.Cpf}");
+        //        Console.WriteLine($"Cargo: {fun01.Cargo}");
+
+        //        Console.WriteLine("-------------------------------");
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("O cliente não foi encontrado!!");
+        //    }
+
+
+        /// TESTE DE ATUALIZAÇÃO DE FUNCIONARIO ///
+
+
+        //Funcionario? meuFuncionario = Funcionario.listarPorId(1);
+        //if (meuFuncionario != null)
+        //{
+        //    meuFuncionario.Nome = "isa";
+        //    meuFuncionario.Cpf = "00011177729";
+
+        //    int resultado = Funcionario.atualizar(meuFuncionario);
+        //    if (resultado == 0)
+        //    {
+        //        Console.WriteLine("Não foi possivel atualizar");
+
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("Funcionario atualizado com sucesso!");
+        //    }
+        //}
+
+
+        ClienteService.MenuCliente();
         }
     }
 }
+    
+
 
 
 

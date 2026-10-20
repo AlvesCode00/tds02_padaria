@@ -132,12 +132,9 @@ namespace backPadaria.Model
             }
         }
 
-
-
-
         public static int atualizar(Funcionario funcionario)
         {
-            string sql = "UPDATE `Cliente` SET `Nome` = @Nome, `Cpf` = @CPF, `Cargo` = @Cargo `Id` = @Id";
+            string sql = "UPDATE `Funcionario` SET `Nome` = @Nome, `CPF` = @CPF, `Cargo` = @Cargo  WHERE `Id` = @Id";
 
             using (var cmd = new MySqlCommand(sql))
             {
