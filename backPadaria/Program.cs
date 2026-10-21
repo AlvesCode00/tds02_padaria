@@ -1,4 +1,5 @@
 ﻿using backPadaria.Model;
+using backPadaria.Service;
 using backPadaria.Services;
 
 namespace backPadaria
@@ -125,98 +126,100 @@ namespace backPadaria
             /// TESTE DE DELETAR FUNCIONARIO ///
 
 
-        //    Console.WriteLine("Resultado:");
-        //    Funcionario deletar = new Funcionario(3);
-        //    if (Funcionario.deletar(deletar) >= 1)
-        //    {
-        //        Console.WriteLine("Funcionario excluido com sucesso.");
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine($"Deu bom não. Não Existe esse Funcionario Cadastrado! ");
-        //    }
+            //    Console.WriteLine("Resultado:");
+            //    Funcionario deletar = new Funcionario(3);
+            //    if (Funcionario.deletar(deletar) >= 1)
+            //    {
+            //        Console.WriteLine("Funcionario excluido com sucesso.");
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine($"Deu bom não. Não Existe esse Funcionario Cadastrado! ");
+            //    }
 
-        //    List<Funcionario> funcionarios = Funcionario.ListarTodos();
+            //    List<Funcionario> funcionarios = Funcionario.ListarTodos();
 
-        //    foreach (Funcionario funcionario in funcionarios)
-        //    {
-        //        Console.WriteLine("-------------------------------");
-        //        Console.WriteLine($"Id: {funcionario.Id}");
-        //        Console.WriteLine($"Nome: {funcionario.Nome}");
-        //        Console.WriteLine($"CPF: {funcionario.Cpf}");
-        //        Console.WriteLine($"Cargo: {funcionario.Cargo}");
-        //        Console.WriteLine("-------------------------------");
-
-
-        //    }
+            //    foreach (Funcionario funcionario in funcionarios)
+            //    {
+            //        Console.WriteLine("-------------------------------");
+            //        Console.WriteLine($"Id: {funcionario.Id}");
+            //        Console.WriteLine($"Nome: {funcionario.Nome}");
+            //        Console.WriteLine($"CPF: {funcionario.Cpf}");
+            //        Console.WriteLine($"Cargo: {funcionario.Cargo}");
+            //        Console.WriteLine("-------------------------------");
 
 
-        //}
+            //    }
 
 
-        /// TESTE DE LISTAGEM DE FUNCIONARIOS ///
+            //}
 
 
-        //List<Funcionario> funcionarios = Funcionario.ListarTodos();
-
-        //foreach (Funcionario funcionario in funcionarios)
-        //{
-        //    Console.WriteLine("-------------------------------");
-        //    Console.WriteLine($"Id: {funcionario.Id}");
-        //    Console.WriteLine($"Nome: {funcionario.Nome}");
-        //    Console.WriteLine($"CPF: {funcionario.Cpf}");
-        //    Console.WriteLine($"Cargo: {funcionario.Cargo}");
-
-        //    Console.WriteLine("-------------------------------");
+            /// TESTE DE LISTAGEM DE FUNCIONARIOS ///
 
 
-        //}
+            //List<Funcionario> funcionarios = Funcionario.ListarTodos();
+
+            //foreach (Funcionario funcionario in funcionarios)
+            //{
+            //    Console.WriteLine("-------------------------------");
+            //    Console.WriteLine($"Id: {funcionario.Id}");
+            //    Console.WriteLine($"Nome: {funcionario.Nome}");
+            //    Console.WriteLine($"CPF: {funcionario.Cpf}");
+            //    Console.WriteLine($"Cargo: {funcionario.Cargo}");
+
+            //    Console.WriteLine("-------------------------------");
 
 
-        //MÉTODO PARA TESTAR A LISTAGEM DE FUNCIONARIOS POR ID
+            //}
 
 
-        //Funcionario? fun01 = Funcionario.listarPorId(2);
-        //    if (fun01 != null)
-        //    {
-        //        Console.WriteLine("-------------------------------");
-
-        //        Console.WriteLine($"Id: {fun01.Id}");
-        //        Console.WriteLine($"Nome: {fun01.Nome}");
-        //        Console.WriteLine($"CPF: {fun01.Cpf}");
-        //        Console.WriteLine($"Cargo: {fun01.Cargo}");
-
-        //        Console.WriteLine("-------------------------------");
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("O cliente não foi encontrado!!");
-        //    }
+            //MÉTODO PARA TESTAR A LISTAGEM DE FUNCIONARIOS POR ID
 
 
-        /// TESTE DE ATUALIZAÇÃO DE FUNCIONARIO ///
+            //Funcionario? fun01 = Funcionario.listarPorId(2);
+            //    if (fun01 != null)
+            //    {
+            //        Console.WriteLine("-------------------------------");
+
+            //        Console.WriteLine($"Id: {fun01.Id}");
+            //        Console.WriteLine($"Nome: {fun01.Nome}");
+            //        Console.WriteLine($"CPF: {fun01.Cpf}");
+            //        Console.WriteLine($"Cargo: {fun01.Cargo}");
+
+            //        Console.WriteLine("-------------------------------");
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("O cliente não foi encontrado!!");
+            //    }
 
 
-        //Funcionario? meuFuncionario = Funcionario.listarPorId(1);
-        //if (meuFuncionario != null)
-        //{
-        //    meuFuncionario.Nome = "isa";
-        //    meuFuncionario.Cpf = "00011177729";
-
-        //    int resultado = Funcionario.atualizar(meuFuncionario);
-        //    if (resultado == 0)
-        //    {
-        //        Console.WriteLine("Não foi possivel atualizar");
-
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Funcionario atualizado com sucesso!");
-        //    }
-        //}
+            /// TESTE DE ATUALIZAÇÃO DE FUNCIONARIO ///
 
 
-        ClienteService.MenuCliente();
+            //Funcionario? meuFuncionario = Funcionario.listarPorId(1);
+            //if (meuFuncionario != null)
+            //{
+            //    meuFuncionario.Nome = "isa";
+            //    meuFuncionario.Cpf = "00011177729";
+
+            //    int resultado = Funcionario.atualizar(meuFuncionario);
+            //    if (resultado == 0)
+            //    {
+            //        Console.WriteLine("Não foi possivel atualizar");
+
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("Funcionario atualizado com sucesso!");
+            //    }
+            //}
+
+
+            //ClienteService.MenuCliente();
+
+            FuncionarioService.MenuFuncionario();
         }
     }
 }

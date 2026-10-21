@@ -323,6 +323,7 @@ namespace backPadaria.Services
 
         }
 
+
         public static void VisualizarPontuacaoMenu()
         {
             Console.WriteLine("----- VISUALIZAR A PONTUAÇÃO -----");

@@ -16,6 +16,20 @@ namespace backPadaria.Model
         private string cargo;
         private static Funcionario funcionario;
 
+
+        public Funcionario(string nome, string cpf, string cargo)
+        {
+            if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(cpf) || string.IsNullOrEmpty(cargo))
+            {
+                throw new ArgumentException("Todos os campos devem ser preenchidos.");
+            }
+
+            this.Nome = nome;
+            this.Cpf = cpf;
+            this.Cargo = cargo;
+           
+        }
+
         public int Id { get => id; set => id = value; }
         public string Nome { get => nome; set => nome = value; }
         public string Cpf { get => cpf; set => cpf = value; }
@@ -35,12 +49,7 @@ namespace backPadaria.Model
             this.Id = id;
         }
 
-        public Funcionario(string? nome, string? cpf, string? cargo)
-        {
-            this.nome = nome;
-            this.cpf = cpf;
-            this.cargo = cargo;
-        }
+       
 
         public static int inserir (Funcionario funcionario)
         {
