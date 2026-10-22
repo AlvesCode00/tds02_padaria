@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace backPadaria.Model
 {
-    internal class Produto : Marca
+    internal class Produto 
     {
         private int id;
         private string nome;
@@ -17,9 +17,11 @@ namespace backPadaria.Model
         private double fabricado;
         private Marca marcaId;
 
-        public Produto(int id)
+        public Produto(int id, string nome, double preco)
         {
             this.id = id;
+            this.nome = nome;
+            this.preco = preco;
         }
 
         public Produto(string nome, double preco, string categoria, double fabricado, Marca marcaId)
@@ -39,7 +41,7 @@ namespace backPadaria.Model
             this.fabricado = fabricado;
             this.marcaId = marcaId;
         }
-        ,
+        
 
         public Produto(int id, string nome, double preco, string categoria, double fabricado, Marca marcaId)
         {
@@ -51,13 +53,20 @@ namespace backPadaria.Model
             this.marcaId = marcaId;
         }
 
+        public Produto(int id, string nome, double preco, string categoria, double fabricado, int marcaId1) : this(id, nome, preco)
+        {
+            this.categoria = categoria;
+            this.fabricado = fabricado;
+            MarcaId1 = marcaId1;
+        }
+
         public int Id { get => id; set => id = value; }
         public string Nome { get => nome; set => nome = value; }
         public double Preco { get => preco; set => preco = value; }
         public string Categoria { get => categoria; set => categoria = value; }
         public double Fabricado { get => fabricado; set => fabricado = value; }
         internal Marca MarcaId { get => marcaId; set => marcaId = value; }
-
+        public int MarcaId1 { get; }
 
         public static int inserirProduto(Produto produto)
         { 
@@ -106,23 +115,77 @@ namespace backPadaria.Model
                     while (reader.Read())
                     {
                         
-                        int id = reader.GetInt32("Id");
+                        int idB = reader.GetInt32("Id");
                         string nome = validarCampo(reader["Nome"]);
                         double preco = reader.GetInt32("Preço");
                         string categoria = validarCampo(reader["Categoria"]);
-                        string fabricado = validarCampo(reader["Fabricado"]);
+                        double fabricado =reader.GetInt32("Fabricado");
                         int marcaId = reader.GetInt32("MarcaId");
 
-                        Produto produto = new Produto(id, nome, preco, categoria, fabricado, marcaId);
+                        Produto produto = new Produto(idB, nome, preco, categoria, fabricado, marcaId);
 
                         listaProdutos.Add(produto);
 
 
                     }
                 }
-                // Retorna a lista completa de clientes.
-                return listaClientes;
+               
+                return listaProdutos;
             }
+        }
+
+        public static Cliente? listarPorId(int id)
+        {
+            string sql = "SELECT * FROM `Cliente` WHERE `id` = @id";
+
+
+            using (var cmd = new MySqlCommand(sql))
+            {
+                cmd.Parameters.AddWithValue("@id", id);
+
+                MySqlDataReader reader = Banco.executarComRetornoDeDados(cmd);
+
+                Cliente? cliente = null;
+
+                while (reader.Read())
+                {
+
+                    int idB = reader.GetInt32("Id");
+                    string nome = validarCampo(reader["Nome"]);
+                    double preco = reader.GetInt32("Preço");
+                    string categoria = validarCampo(reader["Categoria"]);
+                    double fabricado = reader.GetInt32("Fabricado");
+                    int marcaId = reader.GetInt32("MarcaId");
+
+                    Produto produto = new Produto(idB, nome, preco, categoria, fabricado, marcaId);
+                }
+
+                return cliente;
+            }
+        }
+
+        public static int atualizar(Produto produto)
+        {
+            string sql = "UPDATE `Produto` SET `Nome` = @Nome, `Preco` = @Preco, `Categoria` = @Categoria, `Fabricado` = @Fabricado, `MarcaId` = @MarcaId WHERE `Id` = @Id";
+
+            using (var cmd = new MySqlCommand(sql))
+            {
+
+
+                cmd.Parameters.AddWithValue("@Nome", produto.Nome);
+                cmd.Parameters.AddWithValue("@Preco", produto.Preco);
+                cmd.Parameters.AddWithValue("@Categoria", produto.Categoria);
+                cmd.Parameters.AddWithValue("@Fabricado", produto.Fabricado);
+                cmd.Parameters.AddWithValue("@MarcaId", produto.MarcaId);
+
+
+                cmd.Parameters.AddWithValue("@Id", produto.Id);
+
+              
+                return Banco.executarComando(cmd);
+
+            }
+
         }
 
         private static string validarCampo(object campo)

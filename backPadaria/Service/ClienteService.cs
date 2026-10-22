@@ -67,7 +67,7 @@ namespace backPadaria.Services
                                pontos: pontosCliente
                                 );
 
-                            int resultadoInsert = Cliente.inserir(newClient);
+                            int resultadoInsert = Cliente.Inserir(newClient);
                             if (resultadoInsert > 0)
                             {
                                 Console.WriteLine("Cliente cadastrado com sucesso!");
@@ -194,7 +194,7 @@ namespace backPadaria.Services
                         if (meuCli != null)
                         {
                             meuCli.Nome = Console.ReadLine();
-                            int resultado = Cliente.atualizar(meuCli);
+                            int resultado = Cliente.Atualizar(meuCli);
                             if (resultado == 0)
                             {
                                 Console.WriteLine("Não foi possivel atualizar");
@@ -211,7 +211,7 @@ namespace backPadaria.Services
                         if (meuCli1 != null)
                         {
                             meuCli1.Endereco = Console.ReadLine();
-                            int resultado = Cliente.atualizar(meuCli1);
+                            int resultado = Cliente.Atualizar(meuCli1);
                             if (resultado == 0)
                             {
                                 Console.WriteLine("Não foi possivel atualizar");
@@ -229,7 +229,7 @@ namespace backPadaria.Services
                         if (meuCli2 != null)
                         {
                             meuCli2.Telefone = Console.ReadLine();
-                            int resultado = Cliente.atualizar(meuCli2);
+                            int resultado = Cliente.Atualizar(meuCli2);
                             if (resultado == 0)
                             {
                                 Console.WriteLine("Não foi possivel atualizar");
@@ -246,7 +246,7 @@ namespace backPadaria.Services
                         if (meuCli3 != null)
                         {
                             meuCli3.Cpf = Console.ReadLine();
-                            int resultado = Cliente.atualizar(meuCli3);
+                            int resultado = Cliente.Atualizar(meuCli3);
                             if (resultado == 0)
                             {
                                 Console.WriteLine("Não foi possivel atualizar");
@@ -263,7 +263,7 @@ namespace backPadaria.Services
                         if (meuCli4 != null)
                         {
                             meuCli4.Pontos = int.Parse(Console.ReadLine());
-                            int resultado = Cliente.atualizar(meuCli4);
+                            int resultado = Cliente.Atualizar(meuCli4);
                             if (resultado == 0)
                             {
                                 Console.WriteLine("Não foi possivel atualizar");
