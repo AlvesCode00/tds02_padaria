@@ -11,34 +11,34 @@ namespace backPadaria.Model
     {
         private int id;
         private string nome;
-        private string telefone;
+        private string descricao;
 
-        public Marca(string nome, string telefone)
+        public Marca(string nome, string descricao)
         {
             this.nome = nome;
-            this.telefone = telefone;
+            this.descricao = descricao;
         }
 
-        public Marca(int id, string nome, string telefone)
+        public Marca(int id, string nome, string descricao)
         {
             this.id = id;
             this.nome = nome;
-            this.telefone = telefone;
+            this.descricao = descricao;
         }
 
         public int Id { get => id; set => id = value; }
         public string Nome { get => nome; set => nome = value; }
-        public string Telefone { get => telefone; set => telefone = value; }
+        public string Descricao { get => descricao; set => descricao = value; }
 
         public static int inserirMarca(Marca marca)
         {
-            string sql = "INSERT INTO `Marca`(`nome`, `Telefone`) VALUES (@Nome, @Telefone)";
+            string sql = "INSERT INTO `Marca`(`nome`, `Descricao`) VALUES (@Nome, @Descricao)";
 
             using (var cmd = new MySqlCommand(sql))
             {
                 cmd.Parameters.AddWithValue("id", marca.Id);
                 cmd.Parameters.AddWithValue("nome", marca.Nome);
-                cmd.Parameters.AddWithValue("Telefone", marca.Telefone);
+                cmd.Parameters.AddWithValue("Descricao", marca.Descricao);
                 return Banco.executarComando(cmd);
 
             }
@@ -116,14 +116,14 @@ namespace backPadaria.Model
 
         public static int atualizar(Marca marca)
         {
-            string sql = "UPDATE `Marca` SET `Nome` = @Nome, `Telefone` = @Telefone WHERE `Id` = @Id";
+            string sql = "UPDATE `Marca` SET `Nome` = @Nome, `Descricao` = @Descricao WHERE `Id` = @Id";
 
             using (var cmd = new MySqlCommand(sql))
             {
 
                 cmd.Parameters.AddWithValue("id", marca.Id);
                 cmd.Parameters.AddWithValue("nome", marca.Nome);
-                cmd.Parameters.AddWithValue("Telefone", marca.Telefone);
+                cmd.Parameters.AddWithValue("Descricao", marca.Descricao);
 
                 return Banco.executarComando(cmd);
             }
@@ -139,6 +139,11 @@ namespace backPadaria.Model
                 return campo.ToString();
             }
 
+        }
+
+        public static implicit operator Marca(int v)
+        {
+            throw new NotImplementedException();
         }
     }
 }

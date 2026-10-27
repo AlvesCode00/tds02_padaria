@@ -10,7 +10,8 @@ namespace backPadaria.Model
         private int produtoId;
         private string descricaoProducao;
 
-        public ProdFabricado(int id, string nome, double preco, string descricaoProducao) : base(id, nome, preco)
+        public ProdFabricado(int id, string nome, double preco, string descricaoProducao) 
+            : base (id, nome, preco)
         {
             if (string.IsNullOrEmpty(descricaoProducao))
             {

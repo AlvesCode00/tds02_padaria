@@ -1,82 +1,71 @@
 ﻿using MySqlConnector;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace backPadaria.Model
 {
-    internal class Produto 
+    internal class Produto
     {
         private int id;
         private string nome;
-        private double preco;
+        private decimal preco;
         private string categoria;
-        private double fabricado;
-        private Marca marcaId;
+        private bool fabricado;
+        private int marcaId;
 
-        public Produto(int id, string nome, double preco)
+        public Produto(string nome, decimal preco, string categoria, bool fabricado, int marcaId)
         {
-            this.id = id;
-            this.nome = nome;
-            this.preco = preco;
-        }
-
-        public Produto(string nome, double preco, string categoria, double fabricado, Marca marcaId)
-        {
+            if (string.IsNullOrWhiteSpace(nome)) throw new Exception("O nome do produto não pode ser vazio");
             if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(categoria))
             {
                 throw new ArgumentException("Todos os campos devem ser preenchidos.");
             }
-            if (preco == 0 & fabricado == 0 )
+            if (preco <= 0)
             {
-                throw new ArgumentException("O preço não pode ser 0.");
-
+                throw new Exception("O preço não pode ser 0 ou negativo.");
             }
+            if (string.IsNullOrEmpty(categoria)) throw new Exception("A categoria não pode ser vazia.");
+            if (marcaId <= 0)
+            {
+                throw new Exception("O ID da MArca deve ser maior que 0.");
+            }
+
+
+            this.Nome = nome;
+            this.Preco = preco;
+            this.Categoria = categoria;
+            this.Fabricado = fabricado;
+            this.MarcaId = marcaId;
+        }
+
+        public Produto(int id, string nome, decimal preco, string categoria, bool fabricado, int marcaId)
+            : this(nome, preco, categoria, fabricado)
+        {
+            this.Id = id;
+           
+        }
+
+        public Produto(string nome, decimal preco, string categoria, bool fabricado)
+        {
             this.nome = nome;
             this.preco = preco;
             this.categoria = categoria;
             this.fabricado = fabricado;
-            this.marcaId = marcaId;
-        }
-        
-
-        public Produto(int id, string nome, double preco, string categoria, double fabricado, Marca marcaId)
-        {
-            this.id = id;
-            this.nome = nome;
-            this.preco = preco;
-            this.categoria = categoria;
-            this.fabricado = fabricado;
-            this.marcaId = marcaId;
-        }
-
-        public Produto(int id, string nome, double preco, string categoria, double fabricado, int marcaId1) : this(id, nome, preco)
-        {
-            this.categoria = categoria;
-            this.fabricado = fabricado;
-            MarcaId1 = marcaId1;
         }
 
         public int Id { get => id; set => id = value; }
         public string Nome { get => nome; set => nome = value; }
-        public double Preco { get => preco; set => preco = value; }
+        public decimal Preco { get => preco; set => preco = value; }
         public string Categoria { get => categoria; set => categoria = value; }
-        public double Fabricado { get => fabricado; set => fabricado = value; }
-        internal Marca MarcaId { get => marcaId; set => marcaId = value; }
-        public int MarcaId1 { get; }
+        public bool Fabricado { get => fabricado; set => fabricado = value; }
+        public int MarcaId { get => marcaId; set => marcaId = value; }
 
-        public static int inserirProduto(Produto produto)
-        { 
-         string sql = "INSERT INTO `Produto`(`Nome`, `Preco`, `Categoria`, `Fabricado`, `MarcaId`) VALUES (@Nome, @Preco, @Categoria, @Fabricado, @MarcaId)";
+        public static int InserirP(Produto produto)
+        {
+            string sql = "INSERT INTO `Produto` (`Nome`, `Preco`, `Categoria`, `Fabricado`, `MarcaId`) VALUES (@Nome, @Preco, @Categoria, @Fabricado, @MarcaId)";
 
             using (var cmd = new MySqlCommand(sql))
             {
-
-              
-
                 cmd.Parameters.AddWithValue("@Nome", produto.Nome);
                 cmd.Parameters.AddWithValue("@Preco", produto.Preco);
                 cmd.Parameters.AddWithValue("@Categoria", produto.Categoria);
@@ -84,108 +73,87 @@ namespace backPadaria.Model
                 cmd.Parameters.AddWithValue("@MarcaId", produto.MarcaId);
 
                 return Banco.executarComando(cmd);
-
             }
-
         }
+
         public static int Deletar(Produto produto)
         {
-            string sql = "DELETE FROM `Produto` WHERE `Id`  = @id";
+            string sql = "DELETE FROM `Produto` WHERE `Id` = @id";
 
             using (var cmd = new MySqlCommand(sql))
             {
-                cmd.Parameters.AddWithValue("@id", produto.Id);
-
+                cmd.Parameters.AddWithValue("@id", produto.id);
                 return Banco.executarComando(cmd);
             }
         }
 
         public static List<Produto> ListarTodos()
         {
-            string sql = "SELECT * FROM `Cliente`";
-
+            string sql = "SELECT * FROM `Produto`";
             List<Produto> listaProdutos = new();
 
             using (var cmd = new MySqlCommand(sql))
             {
-
                 using (MySqlDataReader reader = Banco.executarComRetornoDeDados(cmd))
                 {
-                   
                     while (reader.Read())
                     {
-                        
-                        int idB = reader.GetInt32("Id");
+                        int id = reader.GetInt32("Id");
                         string nome = validarCampo(reader["Nome"]);
-                        double preco = reader.GetInt32("Preço");
+                        decimal preco = Convert.ToDecimal(reader["Preco"]);
                         string categoria = validarCampo(reader["Categoria"]);
-                        double fabricado =reader.GetInt32("Fabricado");
-                        int marcaId = reader.GetInt32("MarcaId");
+                        bool fabricado = Convert.ToBoolean(reader["Fabricado"]);
+                        int marcaId = Convert.ToInt32(reader["MarcaId"]);
 
-                        Produto produto = new Produto(idB, nome, preco, categoria, fabricado, marcaId);
-
+                        Produto produto = new Produto(id, nome, preco, categoria, fabricado, marcaId);
                         listaProdutos.Add(produto);
-
-
                     }
                 }
-               
                 return listaProdutos;
             }
         }
 
-        public static Cliente? listarPorId(int id)
+        public static Produto? listarPorId(int id)
         {
-            string sql = "SELECT * FROM `Cliente` WHERE `id` = @id";
-
+            string sql = "SELECT * FROM `Produto` WHERE `id` = @Id";
 
             using (var cmd = new MySqlCommand(sql))
             {
-                cmd.Parameters.AddWithValue("@id", id);
-
+                cmd.Parameters.AddWithValue("@Id", id);
                 MySqlDataReader reader = Banco.executarComRetornoDeDados(cmd);
 
-                Cliente? cliente = null;
+                Produto? produto = null;
 
                 while (reader.Read())
                 {
-
-                    int idB = reader.GetInt32("Id");
+                    int idBanco = reader.GetInt32("Id");
                     string nome = validarCampo(reader["Nome"]);
-                    double preco = reader.GetInt32("Preço");
+                    decimal preco = Convert.ToDecimal(reader["Preco"]);
                     string categoria = validarCampo(reader["Categoria"]);
-                    double fabricado = reader.GetInt32("Fabricado");
-                    int marcaId = reader.GetInt32("MarcaId");
+                    bool fabricado = Convert.ToBoolean(reader["Fabricado"]);
+                    int marcaId = Convert.ToInt32(reader["MarcaId"]);
 
-                    Produto produto = new Produto(idB, nome, preco, categoria, fabricado, marcaId);
+                    produto = new Produto(idBanco, nome, preco, categoria, fabricado, marcaId);
                 }
-
-                return cliente;
+                return produto;
             }
         }
 
-        public static int atualizar(Produto produto)
+        public static int Atualizar(Produto produto)
         {
             string sql = "UPDATE `Produto` SET `Nome` = @Nome, `Preco` = @Preco, `Categoria` = @Categoria, `Fabricado` = @Fabricado, `MarcaId` = @MarcaId WHERE `Id` = @Id";
 
             using (var cmd = new MySqlCommand(sql))
             {
-
-
                 cmd.Parameters.AddWithValue("@Nome", produto.Nome);
                 cmd.Parameters.AddWithValue("@Preco", produto.Preco);
                 cmd.Parameters.AddWithValue("@Categoria", produto.Categoria);
                 cmd.Parameters.AddWithValue("@Fabricado", produto.Fabricado);
                 cmd.Parameters.AddWithValue("@MarcaId", produto.MarcaId);
+                cmd.Parameters.AddWithValue("@Id", produto.id);
 
-
-                cmd.Parameters.AddWithValue("@Id", produto.Id);
-
-              
                 return Banco.executarComando(cmd);
-
             }
-
         }
 
         private static string validarCampo(object campo)
@@ -198,8 +166,6 @@ namespace backPadaria.Model
             {
                 return campo.ToString();
             }
-
         }
-
     }
 }
