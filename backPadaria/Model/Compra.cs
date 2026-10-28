@@ -17,14 +17,19 @@ namespace backPadaria.Model
         
         private List<ItemCompra> Itens = new List<ItemCompra>();
 
+        public int Id { get => id; set => id = value; }
+        public DateTime DataHora { get => dataHora; set => dataHora = value; }
+        public int FuncionarioId { get => funcionarioId; set => funcionarioId = value; }
+        public int Clienteid { get => clienteid; set => clienteid = value; }
+
         public Compra(DateTime dataHora, int funcionarioId, int clienteid)
         {
            if (funcionarioId <= 0) throw new ArgumentOutOfRangeException("O funcionário responsável é inválido.");
        
 
-            this.dataHora = dataHora;
-            this.funcionarioId = funcionarioId;
-            this.clienteid = clienteid;
+            this.DataHora = dataHora;
+            this.FuncionarioId = funcionarioId;
+            this.Clienteid = clienteid;
             
         }
 
@@ -32,7 +37,7 @@ namespace backPadaria.Model
             : this(dataHora, funcionarioId, clienteid)
         { 
             if(id <= 0) throw new ArgumentOutOfRangeException("Id da Compra Inválido.");
-            this.id = id;
+            this.Id = id;
            
         }
 
@@ -56,20 +61,20 @@ namespace backPadaria.Model
 
         public static int Inserir(Compra compra)
         {
-            if (compra.clienteid == 0) compra.clienteid = 10000;
+            if (compra.Clienteid == 0) compra.Clienteid = 10000;
             
             using(var cmd = new MySqlCommand("sp_inserirCompra"))
             {
-                cmd.Parameters.AddWithValue("p_DataHora", compra.dataHora);
-                cmd.Parameters.AddWithValue("p_FuncionarioId", compra.funcionarioId);
-                cmd.Parameters.AddWithValue("p_ClienteId", compra.clienteid);
+                cmd.Parameters.AddWithValue("p_DataHora", compra.DataHora);
+                cmd.Parameters.AddWithValue("p_FuncionarioId", compra.FuncionarioId);
+                cmd.Parameters.AddWithValue("p_ClienteId", compra.Clienteid);
 
                 object resultado = Banco.ExecutarComandoComRetornoId(cmd);
 
                 if(resultado != null && int.TryParse(resultado.ToString(), out int idGerado))
                 {
 
-                    Compra.Id = idGerado; 
+                    compra.Id = idGerado; 
                     return idGerado;
                 }
 

@@ -219,7 +219,15 @@ namespace backPadaria
 
             //ClienteService.MenuCliente();
 
-            FuncionarioService.MenuFuncionario();
+            //FuncionarioService.MenuFuncionario();
+
+            //VendaService.MenuVendas();
+
+            //LoginFuncionario login = new LoginFuncionario(2, "jp_padoka@paderiapaoecia.com.br", "deumaoito","Diretor");
+
+            // LoginFuncionario.Inserir(login);
+
+            LoginService.FazerLoginMenu();
         }
     }
 }

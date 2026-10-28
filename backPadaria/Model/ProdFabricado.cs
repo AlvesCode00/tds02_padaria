@@ -5,20 +5,26 @@ using System.Collections.Generic;
 
 namespace backPadaria.Model
 {
-    internal class ProdFabricado : Produto
+    internal class ProdFabricado 
     {
         private int produtoId;
         private string descricaoProducao;
 
-        public ProdFabricado(int id, string nome, double preco, string descricaoProducao) 
-            : base (id, nome, preco)
+        public ProdFabricado(int id, string nome, double preco, string descricaoProducao)
+            
         {
             if (string.IsNullOrEmpty(descricaoProducao))
             {
                 throw new ArgumentException("Todos os campos devem ser preenchidos.");
             }
 
-            this.produtoId = id; 
+            this.produtoId = id;
+            this.descricaoProducao = descricaoProducao;
+        }
+
+        public ProdFabricado(int idProduto, string? descricaoProducao)
+        {
+            IdProduto = idProduto;
             this.descricaoProducao = descricaoProducao;
         }
 

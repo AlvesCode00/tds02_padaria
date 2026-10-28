@@ -88,7 +88,7 @@ namespace backPadaria.Service
                         string descricao = Console.ReadLine();
 
                         ProdFabricado novaFabricacao = new ProdFabricado(produtoInserido.Id, descricao);
-                        ProdFabricado.InserirP(novaFabricacao);
+                        ProdFabricado.inserirDescricao(novaFabricacao);
 
                         Console.WriteLine("Detalhes de fabricação vinculados com sucesso!");
                     }
