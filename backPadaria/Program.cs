@@ -227,7 +227,9 @@ namespace backPadaria
 
             // LoginFuncionario.Inserir(login);
 
-            LoginService.FazerLoginMenu();
+            //LoginService.FazerLoginMenu();
+
+            VendaService.MenuVendas();
         }
     }
 }

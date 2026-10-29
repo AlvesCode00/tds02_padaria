@@ -45,6 +45,11 @@ namespace backPadaria.Model
            
         }
 
+        public Produto(int id)
+        {
+            this.Id = id;
+        }
+
         public Produto(string nome, decimal preco, string categoria, bool fabricado)
         {
             this.nome = nome;

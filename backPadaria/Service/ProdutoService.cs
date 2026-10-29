@@ -87,8 +87,8 @@ namespace backPadaria.Service
                         Console.WriteLine("Digite a Descrição da Produção:");
                         string descricao = Console.ReadLine();
 
-                        ProdFabricado novaFabricacao = new ProdFabricado(produtoInserido.Id, descricao);
-                        ProdFabricado.inserirDescricao(novaFabricacao);
+                        ProdutoFabricado novaFabricacao = new ProdutoFabricado(produtoInserido.Id, descricao);
+                        ProdutoFabricado.Inserir(novaFabricacao);
 
                         Console.WriteLine("Detalhes de fabricação vinculados com sucesso!");
                     }
@@ -118,8 +118,8 @@ namespace backPadaria.Service
                     // FLUXO MELHORADO: Busca a descrição de produção caso seja de fabricação própria
                     if (produto.Fabricado)
                     {
-                        ProdFabricado detalhes = ProdFabricado.ListarProdFPorId(produto.Id);
-                        extraInfo = detalhes != null ? $" | Produção: {detalhes.DescricaoProduto}" : " | Produção: (Sem descrição)";
+                        ProdutoFabricado detalhes = ProdutoFabricado.listarPorId(produto.Id);
+                        extraInfo = detalhes != null ? $" | Produção: {detalhes.DescricaoProducao}" : " | Produção: (Sem descrição)";
                     }
 
                     Console.WriteLine($"ID: {produto.Id} | Nome: {produto.Nome} | Preço: {produto.Preco:C} | Categoria: {produto.Categoria} | Fabricação: {origem}{extraInfo}");
@@ -151,9 +151,9 @@ namespace backPadaria.Service
                 if (produtoBusca.Fabricado)
                 {
                     Console.WriteLine("\n--- DETALHES DE FABRICAÇÃO ---");
-                    ProdFabricado detalhes = ProdFabricado.ListarProdFPorId(produtoBusca.Id);
+                    ProdutoFabricado detalhes = ProdutoFabricado.listarPorId(produtoBusca.Id);
                     if (detalhes != null)
-                        Console.WriteLine($"Descrição: {detalhes.DescricaoProduto}");
+                        Console.WriteLine($"Descrição: {detalhes.DescricaoProducao}");
                     else
                         Console.WriteLine("Nenhuma descrição registada na base de dados.");
                 }
@@ -206,8 +206,8 @@ namespace backPadaria.Service
                 // Se for de fabricação própria, deve excluir os detalhes de produção primeiro para evitar erro de Foreign Key
                 if (produto.Fabricado)
                 {
-                    ProdFabricado detalhes = ProdFabricado.ListarProdFPorId(produto.Id);
-                    if (detalhes != null) ProdFabricado.Deletar(detalhes);
+                    ProdutoFabricado detalhes = ProdutoFabricado.listarPorId(produto.Id);
+                    if (detalhes != null) ProdutoFabricado.Deletar(detalhes);
                 }
 
                 Produto.Deletar(produto);

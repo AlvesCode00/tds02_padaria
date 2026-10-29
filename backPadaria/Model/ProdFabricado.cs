@@ -1,66 +1,79 @@
-﻿
-using MySqlConnector;
+﻿using MySqlConnector;
 using System;
 using System.Collections.Generic;
 
 namespace backPadaria.Model
 {
-    internal class ProdFabricado 
+    // A classe herda de Produto (Especialização do diagrama)
+    internal class ProdutoFabricado : Produto
     {
         private int produtoId;
         private string descricaoProducao;
 
-        public ProdFabricado(int id, string nome, double preco, string descricaoProducao)
-            
+        // Construtor completo: Recebe os atributos do Pai (Produto) e do Filho (ProdutoFabricado)
+        // O "base(...)" envia os dados correspondentes para o construtor da classe Produto
+        public ProdutoFabricado(int id, string nome, decimal preco, string categoria, bool fabricado, int marcaId, int produtoId, string descricaoProducao)
+            : base(id, nome, preco, categoria, fabricado, marcaId)
         {
-            if (string.IsNullOrEmpty(descricaoProducao))
-            {
-                throw new ArgumentException("Todos os campos devem ser preenchidos.");
-            }
+            if (string.IsNullOrWhiteSpace(descricaoProducao))
+                throw new Exception("A descrição de produção não pode ser vazia");
 
-            this.produtoId = id;
-            this.descricaoProducao = descricaoProducao;
+            this.ProdutoId = produtoId;
+            this.DescricaoProducao = descricaoProducao;
         }
 
-        public ProdFabricado(int idProduto, string? descricaoProducao)
+       
+
+        // Construtor apenas com os dados do filho (útil para inserções onde o Produto já existe)
+        public ProdutoFabricado(int produtoId, string descricaoProducao) : base(produtoId)
         {
-            IdProduto = idProduto;
-            this.descricaoProducao = descricaoProducao;
+            this.ProdutoId = produtoId;
+            this.DescricaoProducao = descricaoProducao;
         }
 
-        public int IdProduto { get => produtoId; set => produtoId = value; }
-        public string DescricaoProduto { get => descricaoProducao; set => descricaoProducao = value; }
+        public int ProdutoId { get => produtoId; set => produtoId = value; }
+        public string DescricaoProducao { get => descricaoProducao; set => descricaoProducao = value; }
 
-        public static int inserirDescricao(ProdFabricado prodFabricado)
+        public static int Inserir(ProdutoFabricado produtoFabricado)
         {
-            string sql = "INSERT INTO `ProdFabricado` (`idProduto`, `descricaoProducao`) VALUES (@idProduto, @descricaoProducao)";
+            // Nota: Este método assume que o Produto já foi criado na tabela 'Produto'
+            // e estamos apenas a registar a sua especialização na tabela 'ProdutoFabricado'.
+            string sql = "INSERT INTO `ProdutoFabricado` (`ProdutoId`, `DescricaoProducao`) VALUES (@ProdutoId, @DescricaoProducao)";
 
             using (var cmd = new MySqlCommand(sql))
             {
-                cmd.Parameters.AddWithValue("@idProduto", prodFabricado.produtoId);
-                cmd.Parameters.AddWithValue("@descricaoProducao", prodFabricado.descricaoProducao);
+                cmd.Parameters.AddWithValue("@ProdutoId", produtoFabricado.ProdutoId);
+                cmd.Parameters.AddWithValue("@DescricaoProducao", produtoFabricado.DescricaoProducao);
 
                 return Banco.executarComando(cmd);
             }
         }
 
-        public static int Deletar(ProdFabricado prodFabricado)
+        public static int Deletar(ProdutoFabricado produtoFabricado)
         {
-            string sql = "DELETE FROM `ProdFabricado` WHERE `idProduto` = @idProduto";
+            // Apaga apenas o registo de fabrico (a especialização)
+            string sql = "DELETE FROM `ProdutoFabricado` WHERE `ProdutoId` = @ProdutoId";
 
             using (var cmd = new MySqlCommand(sql))
             {
-                cmd.Parameters.AddWithValue("@idProduto", prodFabricado.produtoId);
-
+                cmd.Parameters.AddWithValue("@ProdutoId", produtoFabricado.ProdutoId);
                 return Banco.executarComando(cmd);
             }
         }
 
-        public static List<ProdFabricado> ListarTodos()
+        public static List<ProdutoFabricado> ListarTodos()
         {
-            string sql = "SELECT * FROM `ProdFabricado`";
+            // O INNER JOIN junta as propriedades da classe Pai (Produto) com a classe Filho (ProdutoFabricado)
+            string sql = @"
+                SELECT 
+                    p.Id, p.Nome, p.Preco, p.Categoria, p.Fabricado, p.MarcaId,
+                    pf.ProdutoId, pf.DescricaoProducao
+                FROM 
+                    ProdutoFabricado pf
+                INNER JOIN 
+                    Produto p ON pf.ProdutoId = p.Id";
 
-            List<ProdFabricado> listaDeProdFabricado = new();
+            List<ProdutoFabricado> listaFabricados = new();
 
             using (var cmd = new MySqlCommand(sql))
             {
@@ -68,40 +81,77 @@ namespace backPadaria.Model
                 {
                     while (reader.Read())
                     {
-                        int produtoId = reader.GetInt32("idProduto");
-                        string descricaoProducao = validarCampo(reader["descricaoProducao"]);
+                        // Extrai dados do Produto (Pai)
+                        int id = reader.GetInt32("Id");
+                        string nome = validarCampo(reader["Nome"]);
+                        decimal preco = Convert.ToDecimal(reader["Preco"]);
+                        string categoria = validarCampo(reader["Categoria"]);
+                        bool fabricado = Convert.ToBoolean(reader["Fabricado"]);
+                        int marcaId = Convert.ToInt32(reader["MarcaId"]);
 
-                        ProdFabricado prodFabricado = new ProdFabricado(produtoId, "", 0, descricaoProducao);
+                        // Extrai dados do ProdutoFabricado (Filho)
+                        int produtoId = reader.GetInt32("ProdutoId");
+                        string descricaoProducao = validarCampo(reader["DescricaoProducao"]);
 
-                        listaDeProdFabricado.Add(prodFabricado);
+                        // Cria o objeto completo
+                        ProdutoFabricado prodFabricado = new ProdutoFabricado(id, nome, preco, categoria, fabricado, marcaId, produtoId, descricaoProducao);
+                        listaFabricados.Add(prodFabricado);
                     }
                 }
+                return listaFabricados;
             }
-
-            return listaDeProdFabricado;
         }
 
-        public static ProdFabricado ListarProdFPorId(int produtoId)
+        public static ProdutoFabricado? listarPorId(int produtoIdPesquisa)
         {
-            string sql = "SELECT * FROM `ProdFabricado` WHERE `idProduto` = @produtoId";
+            string sql = @"
+                SELECT 
+                    p.Id, p.Nome, p.Preco, p.Categoria, p.Fabricado, p.MarcaId,
+                    pf.ProdutoId, pf.DescricaoProducao
+                FROM 
+                    ProdutoFabricado pf
+                INNER JOIN 
+                    Produto p ON pf.ProdutoId = p.Id
+                WHERE 
+                    pf.ProdutoId = @ProdutoId";
 
             using (var cmd = new MySqlCommand(sql))
             {
-                cmd.Parameters.AddWithValue("@produtoId", produtoId);
+                cmd.Parameters.AddWithValue("@ProdutoId", produtoIdPesquisa);
+                MySqlDataReader reader = Banco.executarComRetornoDeDados(cmd);
 
-                using (MySqlDataReader reader = Banco.executarComRetornoDeDados(cmd))
+                ProdutoFabricado? prodFabricado = null;
+
+                while (reader.Read())
                 {
-                    if (reader.Read())
-                    {
-                        int produtoIds = reader.GetInt32("idProduto");
-                        string descricaoProducao = validarCampo(reader["descricaoProducao"]);
+                    int id = reader.GetInt32("Id");
+                    string nome = validarCampo(reader["Nome"]);
+                    decimal preco = Convert.ToDecimal(reader["Preco"]);
+                    string categoria = validarCampo(reader["Categoria"]);
+                    bool fabricado = Convert.ToBoolean(reader["Fabricado"]);
+                    int marcaId = Convert.ToInt32(reader["MarcaId"]);
 
-                        return new ProdFabricado(produtoIds, "", 0, descricaoProducao);
-                    }
+                    int produtoId = reader.GetInt32("ProdutoId");
+                    string descricaoProducao = validarCampo(reader["DescricaoProducao"]);
+
+                    prodFabricado = new ProdutoFabricado(id, nome, preco, categoria, fabricado, marcaId, produtoId, descricaoProducao);
                 }
+                return prodFabricado;
             }
+        }
 
-            return null;
+        public static int Atualizar(ProdutoFabricado produtoFabricado)
+        {
+            // Atualiza apenas os dados específicos da especialização
+            string sql = "UPDATE `ProdutoFabricado` SET `DescricaoProducao` = @DescricaoProducao WHERE `ProdutoId` = @ProdutoId";
+
+            using (var cmd = new MySqlCommand(sql))
+            {
+                cmd.Parameters.AddWithValue("@DescricaoProducao", produtoFabricado.DescricaoProducao);
+                cmd.Parameters.AddWithValue("@ProdutoId", produtoFabricado.ProdutoId);
+
+                return Banco.executarComando(cmd);
+            }
         }
 
         private static string validarCampo(object campo)
@@ -110,8 +160,10 @@ namespace backPadaria.Model
             {
                 return "";
             }
-
-            return campo.ToString();
+            else
+            {
+                return campo.ToString();
+            }
         }
     }
 }
